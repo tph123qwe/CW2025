@@ -2,7 +2,9 @@ GitHub Link: https://github.com/tph123qwe/CW2025
 
 Compilation Instructions: Open Maven Panel --> CW2025 --> Plugins --> javafx --> javafx:run
 
-Implemented and Working Properly:
+Implemented and Working Properly: 
+- Added a Restart Button after failing the level.
+- Added Hard Drop with Space Bar
 
 Implemented but Not Working Properly: 
 
