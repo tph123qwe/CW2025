@@ -83,6 +83,7 @@ public class GuiController implements Initializable {
             }
         });
         gameOverPanel.setVisible(false);
+        gameOverPanel.setController(this);
 
         final Reflection reflection = new Reflection();
         reflection.setFraction(0.8);
