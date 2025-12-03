@@ -12,7 +12,9 @@ Implemented but Not Working Properly:
 Features Not Implemented:
 
 New Java Classes:
+import javafx.scene.layout.Vbox;
 
 Modified Java Classes:
+import javafx.scene.layout.BorderPane -> import javafx.geometry.Pos
 
 Unexpected Problems:
