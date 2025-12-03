@@ -5,6 +5,7 @@ Compilation Instructions: Open Maven Panel --> CW2025 --> Plugins --> javafx -->
 Implemented and Working Properly: 
 - Added a Restart Button after failing the level.
 - Added Hard Drop with Space Bar
+- Added Soft Drop
 
 Implemented but Not Working Properly: 
 
