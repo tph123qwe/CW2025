@@ -6,6 +6,8 @@ public class GameController implements InputEventListener {
 
     private final GuiController viewGuiController;
 
+    private static final int HARD_DROP_POINTS_PER_CELL = 2;
+
     public GameController(GuiController c) {
         viewGuiController = c;
         board.createNewBrick();
@@ -35,6 +37,29 @@ public class GameController implements InputEventListener {
                 board.getScore().add(1);
             }
         }
+        return new DownData(clearRow, board.getViewData());
+    }
+
+    @Override
+    public DownData onHardDropEvent(MoveEvent event) {
+        int dropDistance = 0;
+        while (board.moveBrickDown()) {
+            dropDistance++;
+        }
+
+        board.mergeBrickToBackground();
+        ClearRow clearRow = board.clearRows();
+        if (clearRow.getLinesRemoved() > 0) {
+            board.getScore().add(clearRow.getScoreBonus());
+        }
+        if (event.getEventSource() == EventSource.USER && dropDistance > 0) {
+            board.getScore().add(dropDistance * HARD_DROP_POINTS_PER_CELL);
+        }
+        if (board.createNewBrick()) {
+            viewGuiController.gameOver();
+        }
+        viewGuiController.refreshGameBackground(board.getBoardMatrix());
+
         return new DownData(clearRow, board.getViewData());
     }
 
