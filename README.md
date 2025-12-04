@@ -6,6 +6,7 @@ Implemented and Working Properly:
 - Added a Restart Button after failing the level.
 - Added Hard Drop with Space Bar
 - Added Soft Drop
+- Changed Block Spawning Position Higher
 
 Implemented but Not Working Properly: 
 
