@@ -6,6 +6,7 @@ Implemented and Working Properly:
 - Added a Restart Button after failing the level.
 - Added Hard Drop with Space Bar
 - Added Soft Drop
+- Changed Block Spawning Position Higher
 
 Implemented but Not Working Properly: 
 
@@ -17,4 +18,5 @@ import javafx.scene.layout.Vbox;
 Modified Java Classes:
 import javafx.scene.layout.BorderPane -> import javafx.geometry.Pos
 
-Unexpected Problems:
+Unexpected Problems: 
+- Tried to add Ghost Blocks to show the location of a block before it is placed and it messed up my entire game. Blocks would spawn and place themselves in the air even after i resetted the changes. Had to delete my progress and start from scratch.
