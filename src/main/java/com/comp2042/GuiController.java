@@ -47,6 +47,8 @@ public class GuiController implements Initializable {
 
     private Timeline timeLine;
 
+    private Timeline softDropTimeline;
+
     private final BooleanProperty isPause = new SimpleBooleanProperty();
 
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
@@ -74,6 +76,11 @@ public class GuiController implements Initializable {
                     }
                     if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
                         moveDown(new MoveEvent(EventType.DOWN, EventSource.USER));
+                        if (softDropTimeline != null) {
+                            softDropTimeline = new Timeline(new KeyFrame(Duration.millis(60),
+                                ae -> moveDown(new MoveEvent(EventType.DOWN, EventSource.USER))));
+                            softDropTimeline.setCycleCount(Timeline.INDEFINITE);
+                        }
                         keyEvent.consume();
                     }
                     if (keyEvent.getCode() == KeyCode.SPACE) {
@@ -84,6 +91,19 @@ public class GuiController implements Initializable {
                 if (keyEvent.getCode() == KeyCode.N) {
                     newGame(null);
                 }
+            }
+        });
+
+        gamePanel.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
+                    if (softDropTimeline != null) {
+                        softDropTimeline.stop();
+                    }
+                    keyEvent.consume();
+                }
+
             }
         });
         gameOverPanel.setVisible(false);
@@ -222,12 +242,18 @@ public class GuiController implements Initializable {
     }
 
     public void gameOver() {
+        if (softDropTimeline != null) {
+            softDropTimeline.stop();
+        }
         timeLine.stop();
         gameOverPanel.setVisible(true);
         isGameOver.setValue(Boolean.TRUE);
     }
 
     public void newGame(ActionEvent actionEvent) {
+        if (softDropTimeline != null) {
+            softDropTimeline.stop();
+        }
         timeLine.stop();
         gameOverPanel.setVisible(false);
         eventListener.createNewGame();
@@ -238,6 +264,9 @@ public class GuiController implements Initializable {
     }
 
     public void pauseGame(ActionEvent actionEvent) {
+        if (softDropTimeline != null) {
+            softDropTimeline.stop();
+        }
         gamePanel.requestFocus();
     }
 }
