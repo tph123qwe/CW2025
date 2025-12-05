@@ -8,7 +8,9 @@ Implemented and Working Properly:
 - Added Soft Drop by holding down S or the Down Arrow Key
 - Changed Block Spawning Position Higher
 - Added a Pause Menu after pressing ESC
-- Added Store by pressing the C Key
+- Added Hold Function by pressing the C Key
+- Added Ghost Blocks
+- Added HUD to show next 3 blocks, show block that is behing held and score
 
 Implemented but Not Working Properly: 
 
