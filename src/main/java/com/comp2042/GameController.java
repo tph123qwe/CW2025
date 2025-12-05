@@ -81,6 +81,14 @@ public class GameController implements InputEventListener {
         return board.getViewData();
     }
 
+    @Override
+    public ViewData onHoldEvent(MoveEvent event) {
+        boolean gameOver = board.holdCurrentBrick();
+        if (gameOver) {
+            viewGuiController.gameOver();
+        }
+        return board.getViewData();
+    }
 
     @Override
     public void createNewGame() {

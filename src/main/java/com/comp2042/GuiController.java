@@ -82,6 +82,10 @@ public class GuiController implements Initializable {
                         refreshBrick(eventListener.onRotateEvent(new MoveEvent(EventType.ROTATE, EventSource.USER)));
                         keyEvent.consume();
                     }
+                    if (keyEvent.getCode() == KeyCode.C) {
+                        moveHold(new MoveEvent(EventType.HOLD, EventSource.USER));
+                        keyEvent.consume();
+                    }
                     if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
                         moveDown(new MoveEvent(EventType.DOWN, EventSource.USER));
                         if (softDropTimeline == null) {
@@ -218,6 +222,14 @@ public class GuiController implements Initializable {
         rectangle.setFill(getFillColor(color));
         rectangle.setArcHeight(9);
         rectangle.setArcWidth(9);
+    }
+
+    private void moveHold(MoveEvent event) {
+        if (isPause.getValue() == Boolean.FALSE) {
+            ViewData viewData = eventListener.onHoldEvent(event);
+            refreshBrick(viewData);
+        }
+        if (gamePanel != null) gamePanel.requestFocus();
     }
 
     private void moveDown(MoveEvent event) {

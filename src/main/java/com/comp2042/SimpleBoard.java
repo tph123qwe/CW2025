@@ -16,6 +16,9 @@ public class SimpleBoard implements Board {
     private Point currentOffset;
     private final Score score;
 
+    private Brick heldBrick = null;
+    private boolean holdUsed = false;
+
     public SimpleBoard(int width, int height) {
         this.width = width;
         this.height = height;
@@ -86,6 +89,7 @@ public class SimpleBoard implements Board {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
         currentOffset = new Point(4, 2);
+        holdUsed = false;
         return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 
@@ -96,7 +100,13 @@ public class SimpleBoard implements Board {
 
     @Override
     public ViewData getViewData() {
-        return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0));
+        int[][] heldMatrix = null;
+        if (heldBrick != null) {
+            heldMatrix = heldBrick.getShapeMatrix().get(0);
+        }
+        int[][] nextMatrix = brickGenerator.getNextBrick().getShapeMatrix().get(0);
+        return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(),
+                (int) currentOffset.getY(), nextMatrix, heldMatrix);
     }
 
     @Override
@@ -122,6 +132,34 @@ public class SimpleBoard implements Board {
     public void newGame() {
         currentGameMatrix = new int[width][height];
         score.reset();
+        heldBrick = null;
+        holdUsed = false;
         createNewBrick();
+    }
+
+    @Override
+    public boolean holdCurrentBrick() {
+        if (holdUsed) {
+            return false;
+        }
+
+        Brick current = brickRotator.getBrick();
+        if (current == null) {
+            return false;
+        }
+
+        if (heldBrick == null) {
+            heldBrick = current;
+            boolean gameOver = createNewBrick();
+            holdUsed = true;
+            return gameOver;
+        } else {
+            Brick temp = heldBrick;
+            heldBrick = current;
+            brickRotator.setBrick(temp);
+            currentOffset = new Point(4,0);
+            holdUsed = true;
+            return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
+        }
     }
 }
