@@ -20,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -59,6 +60,9 @@ public class GuiController implements Initializable {
 
     @FXML
     private Label scoreLabel;
+
+    @FXML
+    private BorderPane gameBoard;
 
     private Rectangle[][] displayMatrix;
 
@@ -180,10 +184,8 @@ public class GuiController implements Initializable {
                 brickPanel.add(rectangle, j, i);
             }
         }
-        brickPanel.setLayoutX(gamePanel.getLayoutX() + brick.getxPosition() *
-                brickPanel.getVgap() + brick.getxPosition() * BRICK_SIZE);
-        brickPanel.setLayoutY(-42 + gamePanel.getLayoutY() + brick.getyPosition() *
-                brickPanel.getHgap() + brick.getyPosition() * BRICK_SIZE);
+        brickPanel.setLayoutX(gameBoard.getLayoutX() + 15 + brick.getxPosition() * (brickPanel.getVgap() + BRICK_SIZE));
+        brickPanel.setLayoutY(gameBoard.getLayoutY() + 15 + (brick.getyPosition() - 2) * (brickPanel.getHgap() + BRICK_SIZE));
 
         this.lastBoardMatrix = MatrixOperations.copy(boardMatrix);
         refreshGameBackground(this.lastBoardMatrix);
@@ -257,14 +259,12 @@ public class GuiController implements Initializable {
     }
 
     private void refreshGhost(ViewData brick) {
-        // require lastBoardMatrix to exist
         if (lastBoardMatrix == null) return;
 
         int[][] shape = brick.getBrickData();
         int baseX = brick.getxPosition();
         int ghostY = brick.getGhostYPosition();
 
-        // translucent alpha for ghost
         final double ghostAlpha = 0.35;
 
         for (int i = 0; i < shape.length; i++) {
@@ -273,7 +273,6 @@ public class GuiController implements Initializable {
                 if (cell == 0) continue;
                 int boardX = baseX + j;
                 int boardY = ghostY + i;
-                // only draw if within board and empty in the background
                 if (boardY >= 0 && boardY < lastBoardMatrix.length && boardX >= 0 && boardX < lastBoardMatrix[boardY].length) {
                     if (lastBoardMatrix[boardY][boardX] == 0) {
                         Rectangle r = displayMatrix[boardY][boardX];
@@ -302,10 +301,8 @@ public class GuiController implements Initializable {
 
             refreshGhost(brick);
 
-            brickPanel.setLayoutX(gamePanel.getLayoutX() + brick.getxPosition() *
-                    brickPanel.getVgap() + brick.getxPosition() * BRICK_SIZE);
-            brickPanel.setLayoutY(-42 + gamePanel.getLayoutY() + brick.getyPosition() *
-                    brickPanel.getHgap() + brick.getyPosition() * BRICK_SIZE);
+            brickPanel.setLayoutX(gameBoard.getLayoutX() + 15 + brick.getxPosition() * (brickPanel.getVgap() + BRICK_SIZE));
+            brickPanel.setLayoutY(gameBoard.getLayoutY() + 15 + (brick.getyPosition() - 2) * (brickPanel.getHgap() + BRICK_SIZE));
             for (int i = 0; i < brick.getBrickData().length; i++) {
                 for (int j = 0; j < brick.getBrickData()[i].length; j++) {
                     setRectangleData(brick.getBrickData()[i][j], rectangles[i][j]);

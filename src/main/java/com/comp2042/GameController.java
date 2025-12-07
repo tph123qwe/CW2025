@@ -32,10 +32,6 @@ public class GameController implements InputEventListener {
 
             viewGuiController.refreshGameBackground(board.getBoardMatrix());
 
-        } else {
-            if (event.getEventSource() == EventSource.USER) {
-                board.getScore().add(1);
-            }
         }
         return new DownData(clearRow, board.getViewData());
     }
@@ -51,9 +47,6 @@ public class GameController implements InputEventListener {
         ClearRow clearRow = board.clearRows();
         if (clearRow.getLinesRemoved() > 0) {
             board.getScore().add(clearRow.getScoreBonus());
-        }
-        if (event.getEventSource() == EventSource.USER && dropDistance > 0) {
-            board.getScore().add(dropDistance * HARD_DROP_POINTS_PER_CELL);
         }
         if (board.createNewBrick()) {
             viewGuiController.gameOver();
