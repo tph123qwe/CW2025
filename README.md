@@ -16,16 +16,25 @@ Implemented and Working Properly:
 - Better Random Brick Generation (Get each piece exactly once before seeing repeats)
 - Added a Speed System (Speed increases every 10 pieces placed)
 
-Implemented but Not Working Properly: 
+Implemented but Not Working Properly: None
 
 Features Not Implemented:
+- Music
+- Multiplayer
 
 New Java Classes:
-PauseMenu.java
-RandomBrickGenerator.java
+PausePanel.java
 
 Modified Java Classes:
-
+RandomBrickGenerator.java
+EventType.java
+GameController.java
+GameOverPanel.java
+GuiController.java
+InputEventListener.kava
+Main.java
+SimpleBoard.java
+ViewData.java
 
 Unexpected Problems: 
 - Tried to add Ghost Blocks to show the location of a block before it is placed and it messed up my entire game. Blocks would spawn and place themselves in the air even after i resetted the changes. Had to delete my progress and start from scratch.
