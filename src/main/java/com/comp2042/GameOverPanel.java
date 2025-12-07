@@ -27,7 +27,7 @@ public class GameOverPanel extends VBox {
         setVisible(false);
 
     }
-        public void setController(GuiController controller) {
+    public void setController(GuiController controller) {
         this.controller = controller;
 
     }
