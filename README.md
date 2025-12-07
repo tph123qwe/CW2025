@@ -11,6 +11,10 @@ Implemented and Working Properly:
 - Added Hold Function by pressing the C Key
 - Added Ghost Blocks
 - Added HUD to show next 3 blocks, show block that is behing held and score
+- CSS Styling
+- Scoring System
+- Better Random Brick Generation (Get each piece exactly once before seeing repeats)
+- Added a Speed System (Speed increases every 10 pieces placed)
 
 Implemented but Not Working Properly: 
 
