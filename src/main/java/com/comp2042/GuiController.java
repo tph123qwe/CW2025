@@ -80,6 +80,11 @@ public class GuiController implements Initializable {
 
     private int[][] lastBoardMatrix;
 
+    private int piecesPlaced = 0;
+    private static final int BASE_SPEED = 400;
+    private static final int SPEED_INCREASE_INTERVAL = 10;
+    private static final int MIN_SPEED = 100;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
@@ -190,12 +195,22 @@ public class GuiController implements Initializable {
         this.lastBoardMatrix = MatrixOperations.copy(boardMatrix);
         refreshGameBackground(this.lastBoardMatrix);
 
-        timeLine = new Timeline(new KeyFrame(Duration.millis(400),
+        updateGameSpeed();
+
+        renderPreviews(brick);
+    }
+
+    private void updateGameSpeed() {
+        if (timeLine != null) {
+            timeLine.stop();
+        }
+
+        int currentSpeed = Math.max(MIN_SPEED, BASE_SPEED - (piecesPlaced / SPEED_INCREASE_INTERVAL) * 20);
+
+        timeLine = new Timeline(new KeyFrame(Duration.millis(currentSpeed),
                 ae -> moveDown(new MoveEvent(EventType.DOWN, EventSource.THREAD))));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
-
-        renderPreviews(brick);
     }
 
     private Paint getFillColor(int i) {
@@ -344,6 +359,17 @@ public class GuiController implements Initializable {
                 groupNotification.getChildren().add(notificationPanel);
                 notificationPanel.showScore(groupNotification.getChildren());
             }
+
+            if (event.getEventSource() == EventSource.THREAD && downData.getClearRow() != null) {
+                boolean pieceLanded = !eventListener.onDownEvent(new MoveEvent(EventType.DOWN, EventSource.THREAD)).getViewData().equals(downData.getViewData());
+                if (pieceLanded) {
+                    piecesPlaced++;
+                    if (piecesPlaced % SPEED_INCREASE_INTERVAL == 0) {
+                        updateGameSpeed();
+                    }
+                }
+            }
+
             refreshBrick(downData.getViewData());
         }
         if (gamePanel != null) gamePanel.requestFocus();
@@ -419,7 +445,10 @@ public class GuiController implements Initializable {
         if (pausePanel != null) pausePanel.setVisible(false);
         if (eventListener != null) eventListener.createNewGame();
         if (gamePanel != null) gamePanel.requestFocus();
-        if (timeLine != null) timeLine.play();
+
+        piecesPlaced = 0;
+        updateGameSpeed();
+
         isPause.setValue(Boolean.FALSE);
         isGameOver.setValue(Boolean.FALSE);
     }
