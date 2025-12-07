@@ -14,7 +14,7 @@ public class GameOverPanel extends VBox {
         setAlignment(Pos.CENTER);
 
         Label gameOverLabel = new Label("GAME OVER");
-        gameOverLabel.setStyle("gameOverStyle");
+        gameOverLabel.getStyleClass().add("overlay-label");
 
         Button restartButton = new Button("Restart");
         restartButton.setOnAction(e -> {

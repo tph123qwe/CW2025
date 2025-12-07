@@ -6,6 +6,9 @@ import com.comp2042.logic.bricks.RandomBrickGenerator;
 
 import java.awt.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleBoard implements Board {
 
     private final int width;
@@ -107,20 +110,30 @@ public class SimpleBoard implements Board {
         while (true) {
             p = new Point(p);
             p.translate(0, 1);
-            boolean conflict = MatrixOperations.intersect(boardCopy, currentShape,(int) p.getX(), (int) p.getY());
+            boolean conflict = MatrixOperations.intersect(boardCopy, currentShape, (int) p.getX(), (int) p.getY());
             if (conflict) {
                 break;
             } else {
                 ghostY = (int) p.getY();
             }
         }
+
         int[][] heldMatrix = null;
         if (heldBrick != null) {
             heldMatrix = heldBrick.getShapeMatrix().get(0);
         }
-        int[][] nextMatrix = brickGenerator.getNextBrick().getShapeMatrix().get(0);
+
+        List<int[][]> nextMatrices = new ArrayList<>();
+        if (brickGenerator instanceof RandomBrickGenerator) {
+            nextMatrices = ((RandomBrickGenerator) brickGenerator).getNextBricksMatrices();
+        } else {
+            int[][] next = brickGenerator.getNextBrick() == null ? null : brickGenerator.getNextBrick().getShapeMatrix().get(0);
+            nextMatrices.add(next);
+            nextMatrices.add(null);
+            nextMatrices.add(null);
+        }
         return new ViewData(currentShape, (int) currentOffset.getX(),
-                (int) currentOffset.getY(), nextMatrix, heldMatrix, ghostY);
+                (int) currentOffset.getY(), nextMatrices, heldMatrix, ghostY);
     }
 
     @Override
@@ -171,7 +184,7 @@ public class SimpleBoard implements Board {
             Brick temp = heldBrick;
             heldBrick = current;
             brickRotator.setBrick(temp);
-            currentOffset = new Point(4,0);
+            currentOffset = new Point(4, 0);
             holdUsed = true;
             return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
         }

@@ -1,5 +1,5 @@
 <?import com.comp2042.GameOverPanel?>
-<?import com.comp2042.PauseMenu?>
+<?import com.comp2042.PausePanel?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
@@ -7,8 +7,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
+
 <Pane fx:controller="com.comp2042.GuiController"
       xmlns:fx="http://javafx.com/fxml">
+
     <GridPane fx:id="brickPanel" vgap="1" hgap="1"/>
     <BorderPane styleClass="gameBoard" fx:id="gameBoard">
         <center>
@@ -16,10 +18,21 @@
         </center>
     </BorderPane>
 
+    <VBox layoutX="220" layoutY="30" spacing="8">
+        <Label text="Hold" styleClass="preview-title"/>
+        <GridPane fx:id="heldPanel" hgap="1" vgap="1" styleClass="held-panel preview-panel"/>
+        <Label text="Next" styleClass="preview-title"/>
+        <GridPane fx:id="next1Panel" hgap="1" vgap="1" styleClass="preview-panel"/>
+        <GridPane fx:id="next2Panel" hgap="1" vgap="1" styleClass="preview-panel"/>
+        <GridPane fx:id="next3Panel" hgap="1" vgap="1" styleClass="preview-panel"/>
+        <Label text="Score" styleClass="preview-title"/>
+        <Label fx:id="scoreLabel" text="0" styleClass="score-label"/>
+    </VBox>
+
     <Group fx:id="groupNotification" layoutX="14" layoutY="203">
         <VBox alignment="CENTER">
             <GameOverPanel fx:id="gameOverPanel"/>
-            <PauseMenu fx:id="pauseMenu"/>
+            <PausePanel fx:id="pausePanel"/>
         </VBox>
     </Group>
     <stylesheets>

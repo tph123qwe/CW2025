@@ -1,72 +1,110 @@
-.root {
-    -fx-background-image: url("background_image.png");
+:root {
+    -board-bg-top: #2a2a2a;
+    -board-bg-bottom: #1f1f1f;
+    -board-accent-top: #6ec0c9;
+    -board-accent-bottom: #2b7f86;
+    -panel-bg: rgba(255,255,255,0.03);
+    -panel-border: rgba(255,255,255,0.06);
+    -preview-bg: rgba(0,0,0,0.25);
+    -score-color: #e0f7fa;
+    -label-color: #cfeff0;
 }
 
-.nextBrick {
-    -fx-border-width: 2px;
-    -fx-border-color: whitesmoke;
-    -fx-border-radius: 17px;
+.pane {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, derive(-board-bg-top, 6%), -board-bg-bottom);
 }
 
 .gameBoard {
-    -fx-border-color: linear-gradient(#2A5058, #61a2b1);
-    -fx-border-width: 12px;
-    -fx-border-radius: 12px;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, rgba(30,30,30,0.95), rgba(18,18,18,0.95));
+    -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, -board-accent-top, -board-accent-bottom);
+    -fx-border-width: 10;
+    -fx-border-radius: 18;
+    -fx-background-radius: 12;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 14, 0.2, 0, 6);
 }
 
-.nextBrickLabel {
-    -fx-font-family: "Let's go Digital";
-    -fx-padding: 20px 0 0 0;
-    -fx-font-size: 16px;
-    -fx-text-fill: yellow;
+.pane {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
 }
 
-.ipad-dark-grey {
-    -fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
-    linear-gradient(#020b02, #3a3a3a),
-    linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
-    linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
-    linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
-    -fx-background-insets: 0, 1, 4, 5, 6;
-    -fx-background-radius: 9, 8, 5, 4, 3;
+.preview-panel, .held-panel {
+    -fx-background-color: -panel-bg;
+    -fx-border-color: -panel-border;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
     -fx-padding: 8;
-    /*-fx-font-family: "Helvetica";*/
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 22px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 6, 0.2, 0, 2);
+}
+
+.score-label {
+    -fx-font-family: "Digital-7", "Segoe UI", "Arial";
+    -fx-font-size: 20px;
+    -fx-text-fill: -score-color;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.2), 1, 0.0, 0, 1);
+    -fx-padding: 6 0 0 0;
 }
 
-.rectangleStyle {
-    -fx-fill: linear-gradient(from 41px 34px to 50px 50px, reflect, #ff7f50 30%, #faebd7 47%);
-}
-
-.vbox {
+.overlay-panel {
+    -fx-background-color: rgba(12,12,12,0.75);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 18;
+    -fx-alignment: center;
     -fx-spacing: 12;
 }
 
-.helpInfo {
-    -fx-fill: white;
-    -fx-alignment: center-left;
-    -fx-text-alignment: left;
-    -fx-font-size: 10px;
+.overlay-panel .label {
+    -fx-font-size: 36px;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 8, 0.2, 0, 2);
 }
 
-.bonusStyle {
-    -fx-font-size: 40px;
+.overlay-button {
+    -fx-background-color: linear-gradient(#7ad6d0, #2db0b1);
+    -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-padding: 8 18 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0.2, 0, 2);
 }
 
-.gameOverStyle {
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 48;
-    -fx-background-color: red;
+.overlay-button:hover {
+    -fx-background-color: linear-gradient(#8ee8e2, #37c8c2);
 }
 
-.scoreClass{
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 38;
-    -fx-fill: yellow;
-    -fx-text-fill: yellow;
+.preview-cell {
+    -fx-arc-width: 6;
+    -fx-arc-height: 6;
+    -fx-stroke: rgba(0,0,0,0.45);
+    -fx-stroke-width: 1.2;
+}
+
+.rectangle.brick {
+    -fx-stroke: rgba(0,0,0,0.35);
+    -fx-stroke-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 6, 0.2, 0, 2);
+}
+
+.rectangle.ghost {
+    -fx-opacity: 0.55;
+    -fx-stroke: rgba(0,0,0,0.15);
+    -fx-stroke-width: 1;
+}
+
+.preview-title {
+    -fx-text-fill: -label-color;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.notification {
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 6, 0.2, 0, 2);
 }
