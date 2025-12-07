@@ -46,6 +46,8 @@ public class GuiController implements Initializable {
     @FXML
     private PausePanel pausePanel;
 
+    //HUD for holding bricks and showing next bricks.
+
     @FXML
     private GridPane heldPanel;
 
@@ -55,8 +57,7 @@ public class GuiController implements Initializable {
     @FXML
     private GridPane next2Panel;
 
-    @FXML
-    private GridPane next3Panel;
+    //Displays score
 
     @FXML
     private Label scoreLabel;
@@ -72,6 +73,8 @@ public class GuiController implements Initializable {
 
     private Timeline timeLine;
 
+    //Timeline for soft drop
+
     private Timeline softDropTimeline;
 
     private final BooleanProperty isPause = new SimpleBooleanProperty();
@@ -80,10 +83,12 @@ public class GuiController implements Initializable {
 
     private int[][] lastBoardMatrix;
 
+    //Speed System, tracks the number of pieces placed and increases speed based on thqat value.
+
     private int piecesPlaced = 0;
-    private static final int BASE_SPEED = 400;
-    private static final int SPEED_INCREASE_INTERVAL = 10;
-    private static final int MIN_SPEED = 100;
+    private static final int BASE_SPEED = 400; //Milliseconds
+    private static final int SPEED_INCREASE_INTERVAL = 10; //Speed increases every 10 pieces
+    private static final int MIN_SPEED = 100; //Max speed cap
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,7 +100,7 @@ public class GuiController implements Initializable {
         gamePanel.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                if (keyEvent.getCode() == KeyCode.ESCAPE) { //Pause Menu when pressing ESC key
                     togglePause();
                     keyEvent.consume();
                     return;
@@ -113,13 +118,13 @@ public class GuiController implements Initializable {
                         refreshBrick(eventListener.onRotateEvent(new MoveEvent(EventType.ROTATE, EventSource.USER)));
                         keyEvent.consume();
                     }
-                    else if (keyEvent.getCode() == KeyCode.C) {
+                    else if (keyEvent.getCode() == KeyCode.C) { //Hold function when pressing C
                         moveHold(new MoveEvent(EventType.HOLD, EventSource.USER));
                         keyEvent.consume();
                     }
-                    else if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
+                    else if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) { //Soft drop function when pressing the Down or S Key
                         moveDown(new MoveEvent(EventType.DOWN, EventSource.USER));
-                        if (softDropTimeline == null) {
+                        if (softDropTimeline == null) { //Timeline that triggers every 60 milliseconds when key is held
                             softDropTimeline = new Timeline(new KeyFrame(Duration.millis(60),
                                     ae -> moveDown(new MoveEvent(EventType.DOWN, EventSource.USER))));
                             softDropTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -127,7 +132,7 @@ public class GuiController implements Initializable {
                         softDropTimeline.play();
                         keyEvent.consume();
                     }
-                    else if (keyEvent.getCode() == KeyCode.SPACE) {
+                    else if (keyEvent.getCode() == KeyCode.SPACE) { //Hard drop function when pressing SPACE
                         moveHardDrop(new MoveEvent(EventType.HARD_DROP, EventSource.USER));
                         keyEvent.consume();
                     }
@@ -140,7 +145,7 @@ public class GuiController implements Initializable {
 
         gamePanel.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent keyEvent) {
+            public void handle(KeyEvent keyEvent) { // when Down or S key is released, stop Soft drop
                 if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
                     if (softDropTimeline != null) {
                         softDropTimeline.stop();
@@ -154,6 +159,7 @@ public class GuiController implements Initializable {
             gameOverPanel.setVisible(false);
             gameOverPanel.setController(this);
         }
+        //Initialize pause menu that appears when esc key is pressed
         if (pausePanel != null) {
             pausePanel.setVisible(false);
             pausePanel.setController(this);
@@ -195,16 +201,19 @@ public class GuiController implements Initializable {
         this.lastBoardMatrix = MatrixOperations.copy(boardMatrix);
         refreshGameBackground(this.lastBoardMatrix);
 
+        //Speed system implementation
+        //Starts game at base speed
         updateGameSpeed();
-
+        //Displays held piece and next 3 pieces on the side panel
         renderPreviews(brick);
     }
-
+    //Speed System implementation
+    //Speed increases every 10 pieces placed
     private void updateGameSpeed() {
         if (timeLine != null) {
             timeLine.stop();
         }
-
+        //starts at 400ms and decreases by 20ms every 10 pieces
         int currentSpeed = Math.max(MIN_SPEED, BASE_SPEED - (piecesPlaced / SPEED_INCREASE_INTERVAL) * 20);
 
         timeLine = new Timeline(new KeyFrame(Duration.millis(currentSpeed),
@@ -247,6 +256,7 @@ public class GuiController implements Initializable {
         return returnPaint;
     }
 
+    //Shows a grid for the side panel for the next pieces and hold function ( just for styling purposes)
     private void renderMiniGrid(GridPane pane, int[][] shape) {
         pane.getChildren().clear();
         if (shape == null) return;
@@ -264,15 +274,16 @@ public class GuiController implements Initializable {
         }
     }
 
+    //Updates the Held Piece and the next 2 blocks
     private void renderPreviews(ViewData viewData) {
         if (viewData == null) return;
         renderMiniGrid(heldPanel, viewData.getHeldBrickData());
         List<int[][]> nextList = viewData.getNextBricksData();
         if (nextList.size() > 0) renderMiniGrid(next1Panel, nextList.get(0));
         if (nextList.size() > 1) renderMiniGrid(next2Panel, nextList.get(1));
-        if (nextList.size() > 2) renderMiniGrid(next3Panel, nextList.get(2));
     }
 
+    //Ghost Block implementation
     private void refreshGhost(ViewData brick) {
         if (lastBoardMatrix == null) return;
 
@@ -282,6 +293,7 @@ public class GuiController implements Initializable {
 
         final double ghostAlpha = 0.35;
 
+        //Draws ghost blocks where the brick will land
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[i].length; j++) {
                 int cell = shape[i][j];
@@ -294,6 +306,7 @@ public class GuiController implements Initializable {
                         Paint base = getFillColor(cell);
                         if (base instanceof Color) {
                             Color c = (Color) base;
+                            //Transparent version of the current piece
                             r.setFill(Color.color(c.getRed(), c.getGreen(), c.getBlue(), ghostAlpha));
                         } else {
                             r.setFill(base);
@@ -313,7 +326,7 @@ public class GuiController implements Initializable {
                     }
                 }
             }
-
+            //refreshes ghost brick
             refreshGhost(brick);
 
             brickPanel.setLayoutX(gameBoard.getLayoutX() + 15 + brick.getxPosition() * (brickPanel.getVgap() + BRICK_SIZE));
@@ -323,6 +336,7 @@ public class GuiController implements Initializable {
                     setRectangleData(brick.getBrickData()[i][j], rectangles[i][j]);
                 }
             }
+            //refreshes blocks for the side panels
             renderPreviews(brick);
         }
         if (gamePanel != null) gamePanel.requestFocus();
@@ -342,7 +356,7 @@ public class GuiController implements Initializable {
         rectangle.setArcHeight(9);
         rectangle.setArcWidth(9);
     }
-
+    //Hold function
     private void moveHold(MoveEvent event) {
         if (isPause.getValue() == Boolean.FALSE) {
             ViewData viewData = eventListener.onHoldEvent(event);
@@ -354,12 +368,13 @@ public class GuiController implements Initializable {
     private void moveDown(MoveEvent event) {
         if (isPause.getValue() == Boolean.FALSE) {
             DownData downData = eventListener.onDownEvent(event);
+            //Scoring system display and notification
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
                 NotificationPanel notificationPanel = new NotificationPanel("+" + downData.getClearRow().getScoreBonus());
                 groupNotification.getChildren().add(notificationPanel);
                 notificationPanel.showScore(groupNotification.getChildren());
             }
-
+            //increments counter when blocks are placed and updates the speed accordingly
             if (event.getEventSource() == EventSource.THREAD && downData.getClearRow() != null) {
                 boolean pieceLanded = !eventListener.onDownEvent(new MoveEvent(EventType.DOWN, EventSource.THREAD)).getViewData().equals(downData.getViewData());
                 if (pieceLanded) {
@@ -374,7 +389,7 @@ public class GuiController implements Initializable {
         }
         if (gamePanel != null) gamePanel.requestFocus();
     }
-
+    //Hard drop
     private void moveHardDrop(MoveEvent event) {
         if (isPause.getValue() == Boolean.FALSE) {
             DownData downData = eventListener.onHardDropEvent(event);
@@ -387,7 +402,7 @@ public class GuiController implements Initializable {
         }
         if (pausePanel != null) gamePanel.requestFocus();
     }
-
+    //Pause menu toggle
     private void togglePause() {
         if (isGameOver.getValue() == Boolean.TRUE) {
             return;
@@ -409,7 +424,7 @@ public class GuiController implements Initializable {
             isPause.setValue(Boolean.TRUE);
         }
     }
-
+    //resume from pause
     public void resumeFromPause() {
         if (pausePanel != null) pausePanel.setVisible(false);
         if (timeLine != null) timeLine.play();
@@ -421,7 +436,7 @@ public class GuiController implements Initializable {
     public void setEventListener(InputEventListener eventListener) {
         this.eventListener = eventListener;
     }
-
+    //bind score label to score property for automatic updates
     public void bindScore(IntegerProperty integerProperty) {
         if (scoreLabel != null && integerProperty != null) {
             scoreLabel.textProperty().bind(integerProperty.asString());
@@ -435,7 +450,7 @@ public class GuiController implements Initializable {
         if (gameOverPanel != null) gameOverPanel.setVisible(true);
         isGameOver.setValue(Boolean.TRUE);
     }
-
+    // restart function
     public void newGame(ActionEvent actionEvent) {
         if (softDropTimeline != null) {
             softDropTimeline.stop();
@@ -446,6 +461,7 @@ public class GuiController implements Initializable {
         if (eventListener != null) eventListener.createNewGame();
         if (gamePanel != null) gamePanel.requestFocus();
 
+        //reset speed when new game
         piecesPlaced = 0;
         updateGameSpeed();
 

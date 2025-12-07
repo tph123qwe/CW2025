@@ -19,15 +19,19 @@ public class SimpleBoard implements Board {
     private Point currentOffset;
     private final Score score;
 
+    //Stores held brick and prevents hold spamming
+
     private Brick heldBrick = null;
-    private boolean holdUsed = false;
+    private boolean holdUsed = false; //prevents spamming hold per piece
 
     public SimpleBoard(int width, int height) {
         this.width = width;
         this.height = height;
         currentGameMatrix = new int[width][height];
+        // uses bag system for fairer piece distribution
         brickGenerator = new RandomBrickGenerator();
         brickRotator = new BrickRotator();
+        //initializes score tracker
         score = new Score();
     }
 
@@ -91,8 +95,8 @@ public class SimpleBoard implements Board {
     public boolean createNewBrick() {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
-        currentOffset = new Point(4, 2);
-        holdUsed = false;
+        currentOffset = new Point(4, 2); // changed block spawning higher
+        holdUsed = false; //Allows hold function to be used for the new piece
         return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 
@@ -102,12 +106,12 @@ public class SimpleBoard implements Board {
     }
 
     @Override
-    public ViewData getViewData() {
+    public ViewData getViewData() { //ghost block calculation, returns ViewData including ghost Y position for display
         int ghostY = (int) currentOffset.getY();
         int[][] currentShape = brickRotator.getCurrentShape();
         int[][] boardCopy = MatrixOperations.copy(currentGameMatrix);
         Point p = new Point(currentOffset);
-        while (true) {
+        while (true) { //simulate dropping piece down until it hits something
             p = new Point(p);
             p.translate(0, 1);
             boolean conflict = MatrixOperations.intersect(boardCopy, currentShape, (int) p.getX(), (int) p.getY());
@@ -117,12 +121,13 @@ public class SimpleBoard implements Board {
                 ghostY = (int) p.getY();
             }
         }
-
+        // gets the matrix of held piece to display and null if there is nothing
         int[][] heldMatrix = null;
         if (heldBrick != null) {
             heldMatrix = heldBrick.getShapeMatrix().get(0);
         }
 
+        //get matrices for the next 2 pieces
         List<int[][]> nextMatrices = new ArrayList<>();
         if (brickGenerator instanceof RandomBrickGenerator) {
             nextMatrices = ((RandomBrickGenerator) brickGenerator).getNextBricksMatrices();
@@ -154,7 +159,7 @@ public class SimpleBoard implements Board {
         return score;
     }
 
-
+    //resets all game state when new game starts
     @Override
     public void newGame() {
         currentGameMatrix = new int[width][height];
@@ -163,7 +168,8 @@ public class SimpleBoard implements Board {
         holdUsed = false;
         createNewBrick();
     }
-
+    //swaps current piece with held piece when C is pressed
+    //can only be used once per piece
     @Override
     public boolean holdCurrentBrick() {
         if (holdUsed) {
