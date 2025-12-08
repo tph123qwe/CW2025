@@ -10,7 +10,7 @@ Implemented and Working Properly:
 - Added a Pause Menu after pressing ESC
 - Added Hold Function by pressing the C Key
 - Added Ghost Blocks
-- Added HUD to show next 3 blocks, show block that is behing held and score
+- Added HUD to show next 2 blocks, show block that is being held and score
 - CSS Styling
 - Scoring System
 - Better Random Brick Generation (Get each piece exactly once before seeing repeats)
@@ -38,3 +38,4 @@ ViewData.java
 
 Unexpected Problems: 
 - Tried to add Ghost Blocks to show the location of a block before it is placed and it messed up my entire game. Blocks would spawn and place themselves in the air even after i resetted the changes. Had to delete my progress and start from scratch.
+- Could not get the HUD to show the next 3rd block, so i scrapped it.
