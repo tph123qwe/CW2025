@@ -19,14 +19,14 @@ Implemented and Working Properly:
 Implemented but Not Working Properly: None
 
 Features Not Implemented:
-- Music
-- Multiplayer
+- Music (took way too long)
+- Multiplayer (way too difficult and not worth it)
 
 New Java Classes:
-PausePanel.java
+PausePanel.java (for the Pause Menu to be implemented)
 
 Modified Java Classes:
-RandomBrickGenerator.java
+RandomBrickGenerator.java 
 EventType.java
 GameController.java
 GameOverPanel.java
