@@ -1,5 +1,7 @@
 package com.comp2042;
 
+/** A simple data class used to communicate a specific move request from the GUI to the game logic, it carries both the type of move requested and the source.*/
+
 public final class MoveEvent {
     private final EventType eventType;
     private final EventSource eventSource;

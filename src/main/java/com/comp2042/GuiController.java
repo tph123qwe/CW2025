@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
 
+/** Visual controller linking the JavaFx elements to the game logic, handling rendering and keyboard events. Contains the main game {@link javafx.animation.Timeline}, which controls the game state.*/
+
 public class GuiController implements Initializable {
 
     private static final int BRICK_SIZE = 20;
@@ -437,11 +439,16 @@ public class GuiController implements Initializable {
         this.eventListener = eventListener;
     }
     //bind score label to score property for automatic updates
+
+    /** Binds the score label in the HUD to the game's score property. This allows the score to update automatically. @param integerProperty The score property from the Model.*/
+
     public void bindScore(IntegerProperty integerProperty) {
         if (scoreLabel != null && integerProperty != null) {
             scoreLabel.textProperty().bind(integerProperty.asString());
         }
     }
+
+    /** Stops all game timelines (game loop and soft drop timer), displays the game over panel and sets the game state to game over.*/
 
     public void gameOver() {
         if (pausePanel != null) pausePanel.setVisible(false);

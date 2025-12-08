@@ -14,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+/** Responsible for displaying on-screen notifications, such as score bonuses. It uses {@link javafx.animation.ParallelTransition} to animate the test.*/
+
 public class NotificationPanel extends BorderPane {
 
     public NotificationPanel(String text) {
@@ -27,6 +29,8 @@ public class NotificationPanel extends BorderPane {
         setCenter(score);
 
     }
+
+    /** Runs the animation for the notification panel. Ensures the panel removes itself from the parent group once the animation is complete. @param list The ObservableList of Nodes in the parent Group that the panel will remove itself from.*/
 
     public void showScore(ObservableList<Node> list) {
         FadeTransition ft = new FadeTransition(Duration.millis(2000), this);
