@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/** The visual panel displayed when the game ends, allows the user to restart. */
+
 public class GameOverPanel extends VBox {
 
     private GuiController controller;

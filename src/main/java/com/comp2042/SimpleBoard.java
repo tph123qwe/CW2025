@@ -9,6 +9,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Implementation of {@link com.comp2042.Board}. Manages the game grid, movement, collision and piece generation.*/
+
 public class SimpleBoard implements Board {
 
     private final int width;

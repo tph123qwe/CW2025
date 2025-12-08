@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+/** Generates Tetris pieces using the bag system for fair distribution*/
+
 public class RandomBrickGenerator implements BrickGenerator {
 
     private final List<Brick> brickList;

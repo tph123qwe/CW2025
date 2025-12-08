@@ -6,6 +6,8 @@ import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Provides static methods for 2D Array manipulation, collision, and row removal logic*/
+
 public class MatrixOperations {
 
 
@@ -13,6 +15,8 @@ public class MatrixOperations {
     private MatrixOperations(){
 
     }
+
+    /**Checks if brick at a position collides with boundaries or existing blocks. @return {@code true} if a collision occurs. */
 
     public static boolean intersect(final int[][] matrix, final int[][] brick, int x, int y) {
         for (int i = 0; i < brick.length; i++) {

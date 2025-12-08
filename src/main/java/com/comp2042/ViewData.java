@@ -3,6 +3,8 @@ package com.comp2042;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Data transfer object containing all visual information sent from the model to the GUI */
+
 public final class ViewData {
 
     private final int[][] brickData;

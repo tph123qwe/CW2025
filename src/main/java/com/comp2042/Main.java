@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** The entry point for the JavaFx application, sets up the stage, scene and controllers.*/
+
 public class Main extends Application {
 
     @Override

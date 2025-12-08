@@ -1,5 +1,7 @@
 package com.comp2042;
 
+/** The main controller linking the GUI (view) and the game logic (model), processing all user inputs.*/
+
 public class GameController implements InputEventListener {
 
     private Board board = new SimpleBoard(25, 10);

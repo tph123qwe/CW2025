@@ -1,5 +1,7 @@
 package com.comp2042;
 
+/** Data transfer object containing the results of a cleared row operation.*/
+
 public final class ClearRow {
 
     private final int linesRemoved;
